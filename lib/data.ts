@@ -1,0 +1,48 @@
+export const ROLES = [
+  "Frontend Developer",
+  "Backend Developer",
+  "Full Stack Developer",
+  "Mobile Developer",
+  "DevOps Engineer",
+  "UI/UX Designer",
+  "Data Scientist",
+  "Machine Learning Engineer",
+];
+
+export const SKILLS = [
+  "React",
+  "Node.js",
+  "TypeScript",
+  "JavaScript",
+  "Python",
+  "Java",
+  "C++",
+  "Go",
+  "Rust",
+  "CI/CD",
+  "Docker",
+  "Kubernetes",
+  "AWS",
+  "Azure",
+  "GCP",
+  "PostgreSQL",
+  "MongoDB",
+  "Redis",
+  "GraphQL",
+  "REST API",
+  "Next.js",
+  "Vue.js",
+  "Angular",
+  "React Native",
+  "Flutter",
+  "Swift",
+  "Kotlin",
+];
+
+export const WRITING_STYLES = [
+  "Professional",
+  "Conversational",
+  "Technical",
+  "Creative",
+  "Concise",
+];
