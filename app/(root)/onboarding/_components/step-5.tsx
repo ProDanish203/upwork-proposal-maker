@@ -1,13 +1,13 @@
-import { Label } from "../ui/label";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 import { WRITING_STYLES } from "@/lib/data";
-import { Textarea } from "../ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { useOnboardingStore } from "@/store/onbboading";
 
 export const OnboardingStep5 = () => {

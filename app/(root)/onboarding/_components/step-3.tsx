@@ -1,24 +1,17 @@
-import { useState } from "react";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import { Card, CardContent } from "../ui/card";
-import { Checkbox } from "../ui/checkbox";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { SKILLS } from "@/lib/data";
 import { WorkExperience } from "@/types";
 import { useOnboardingStore } from "@/store/onbboading";
 import { toast } from "sonner";
-
-interface WorkExperienceInput {
-  [key: string]: string;
-}
+import { MultiSelect } from "@/components/helpers/multi-select";
 
 export const OnboardingStep3 = () => {
   const { workExperiences, setWorkExperiences } = useOnboardingStore();
-  const [workExpSkillInputs, setWorkExpSkillInputs] =
-    useState<WorkExperienceInput>({ "1": "" });
 
   const addWorkExperience = () => {
     if (workExperiences.length > 0) {
@@ -42,7 +35,6 @@ export const OnboardingStep3 = () => {
         skills: [],
       },
     ]);
-    setWorkExpSkillInputs((prev) => ({ ...prev, [newId]: "" }));
   };
 
   const updateWorkExperience = (
@@ -59,29 +51,17 @@ export const OnboardingStep3 = () => {
 
   const removeWorkExperience = (id: string) => {
     setWorkExperiences(workExperiences.filter((exp) => exp.id !== id));
-    setWorkExpSkillInputs((prev) => {
-      const updated = { ...prev };
-      delete updated[id];
-      return updated;
-    });
   };
 
-  const addWorkExpSkill = (expId: string, skill: string) => {
+  const removeSkillFromExperience = (expId: string, skillToRemove: string) => {
     const exp = workExperiences.find((e) => e.id === expId);
-    if (exp && skill && !exp.skills.includes(skill)) {
-      updateWorkExperience(expId, "skills", [...exp.skills, skill]);
-      setWorkExpSkillInputs((prev) => ({ ...prev, [expId]: "" }));
+    if (exp) {
+      updateWorkExperience(
+        expId,
+        "skills",
+        exp.skills.filter((s) => s !== skillToRemove)
+      );
     }
-  };
-
-  const getFilteredWorkExpSkills = (expId: string) => {
-    const exp = workExperiences.find((e) => e.id === expId);
-    const input = workExpSkillInputs[expId] || "";
-    return SKILLS.filter(
-      (skill) =>
-        skill.toLowerCase().includes(input.toLowerCase()) &&
-        !exp?.skills.includes(skill)
-    );
   };
 
   return (
@@ -176,54 +156,15 @@ export const OnboardingStep3 = () => {
 
               <div className="space-y-2">
                 <Label>Skills Used</Label>
-                <div className="relative">
-                  <Input
-                    value={workExpSkillInputs[exp.id] || ""}
-                    onChange={(e) =>
-                      setWorkExpSkillInputs((prev) => ({
-                        ...prev,
-                        [exp.id]: e.target.value,
-                      }))
-                    }
-                    placeholder="Type to search skills"
-                  />
-                  {workExpSkillInputs[exp.id] &&
-                    getFilteredWorkExpSkills(exp.id).length > 0 && (
-                      <Card className="absolute z-10 w-full mt-1 max-h-40 overflow-y-auto">
-                        <CardContent className="p-2">
-                          {getFilteredWorkExpSkills(exp.id).map((skill) => (
-                            <div
-                              key={skill}
-                              className="px-3 py-2 hover:bg-accent rounded cursor-pointer text-sm"
-                              onClick={() => addWorkExpSkill(exp.id, skill)}
-                            >
-                              {skill}
-                            </div>
-                          ))}
-                        </CardContent>
-                      </Card>
-                    )}
-                </div>
-                {exp.skills.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {exp.skills.map((skill) => (
-                      <Badge
-                        key={skill}
-                        variant="secondary"
-                        className="cursor-pointer px-3 py-1"
-                        onClick={() =>
-                          updateWorkExperience(
-                            exp.id,
-                            "skills",
-                            exp.skills.filter((s) => s !== skill)
-                          )
-                        }
-                      >
-                        {skill} ×
-                      </Badge>
-                    ))}
-                  </div>
-                )}
+                <MultiSelect
+                  data={SKILLS}
+                  selectedItems={exp.skills}
+                  onAdd={(skills) =>
+                    updateWorkExperience(exp.id, "skills", skills)
+                  }
+                  onRemove={(skill) => removeSkillFromExperience(exp.id, skill)}
+                  placeholder="Type to search skills"
+                />
               </div>
             </CardContent>
           </Card>

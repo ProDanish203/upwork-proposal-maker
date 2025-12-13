@@ -4,11 +4,13 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle2, Loader2 } from "lucide-react";
-import { OnboardingStep1 } from "@/components/onboarding/step-1";
-import { OnboardingStep2 } from "@/components/onboarding/step-2";
-import { OnboardingStep3 } from "@/components/onboarding/step-3";
-import { OnboardingStep4 } from "@/components/onboarding/step-4";
-import { OnboardingStep5 } from "@/components/onboarding/step-5";
+import {
+  OnboardingStep1,
+  OnboardingStep2,
+  OnboardingStep3,
+  OnboardingStep4,
+  OnboardingStep5,
+} from "./_components";
 import { useOnboardingStore } from "@/store/onbboading";
 import { updateProfile, getUserProfile } from "@/API/user.api";
 import { useMutation, useQuery } from "@tanstack/react-query";
