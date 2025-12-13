@@ -23,6 +23,7 @@ const userSchema = new Schema<IUser>(
       type: Boolean,
       default: false,
     },
+    age: Number,
     introduction: String,
     roles: {
       type: [String],

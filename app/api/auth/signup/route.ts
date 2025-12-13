@@ -21,10 +21,10 @@ export const POST = async (req: NextRequest) => {
     const salt = await bcryptjs.genSalt(10);
     const hashedPass = await bcryptjs.hash(password, salt);
 
-    const newUser = await User.create({ 
-      email, 
-      password: hashedPass, 
-      fullname 
+    const newUser = await User.create({
+      email,
+      password: hashedPass,
+      fullname,
     });
     if (!newUser) return throwApiError("Failed to create user", 500);
 
@@ -49,6 +49,11 @@ export const POST = async (req: NextRequest) => {
 
     response.cookies.set("token", token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    response.cookies.set("onboarded", newUser.onboarded ? "true" : "false", {
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
     });
 

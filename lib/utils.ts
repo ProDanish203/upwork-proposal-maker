@@ -33,7 +33,7 @@ export const extractFromToken = (req: NextRequest) => {
 
     if (!token) throw new Error("No token provided");
 
-    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET!);
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY!);
 
     if (!decodedToken || typeof decodedToken === "string")
       throw new Error("Invalid token");

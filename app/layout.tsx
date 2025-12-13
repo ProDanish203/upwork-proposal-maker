@@ -34,7 +34,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body
         className={cn(
-          "antialiased overflow-x-clip min-h-screen bg-neutral-50 dark:bg-black selection:bg-green-200 dark:selection:bg-green-500 dark:selection:text-black transition-colors",
+          "antialiased overflow-x-clip min-h-screen bg-neutral-50 dark:bg-background selection:bg-green-200 dark:selection:bg-green-500 dark:selection:text-black transition-colors",
           poppins.className,
           roboto.variable
         )}

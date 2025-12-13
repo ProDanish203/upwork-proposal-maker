@@ -43,6 +43,11 @@ export const POST = async (req: NextRequest) => {
       secure: process.env.NODE_ENV === "production",
     });
 
+    response.cookies.set("onboarded", user.onboarded ? "true" : "false", {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+    });
+
     return response;
   } catch (error: any) {
     return throwApiError(error.message || "Internal Server Error", 500);
