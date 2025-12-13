@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import ReactQueryProvider from "@/store/react-query-provider";
+import { EdgeStoreProvider } from "../lib/edgestore";
 
 const poppins = Poppins({
   weight: ["200", "300", "400", "500", "600", "700", "800"],
@@ -39,12 +40,14 @@ export default function RootLayout({
           roboto.variable
         )}
       >
-        <ReactQueryProvider>
-          <main className="">
-            <Toaster position="top-right" richColors />
-            {children}
-          </main>
-        </ReactQueryProvider>
+        <EdgeStoreProvider>
+          <ReactQueryProvider>
+            <main className="">
+              <Toaster position="top-right" richColors />
+              {children}
+            </main>
+          </ReactQueryProvider>
+        </EdgeStoreProvider>
       </body>
     </html>
   );
