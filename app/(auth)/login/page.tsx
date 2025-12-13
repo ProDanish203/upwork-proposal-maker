@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-// import { login } from "@/API/auth.api";
+import { login } from "@/API/auth.api";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -19,14 +19,17 @@ import { LoginSchema, loginSchema } from "@/schema/auth.schema";
 import { Input } from "@/components/ui/input";
 import { useUserStore } from "@/store/user.store";
 import { Label } from "@/components/ui/label";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 const LoginPage = () => {
   const router = useRouter();
   const { setUser } = useUserStore();
+  const [showPassword, setShowPassword] = useState(false);
 
-  // const { mutateAsync } = useMutation({
-  //   mutationFn: login,
-  // });
+  const { mutateAsync } = useMutation({
+    mutationFn: login,
+  });
 
   const {
     register,
@@ -37,13 +40,14 @@ const LoginPage = () => {
   });
 
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
-    // const { response, success } = await mutateAsync(data);
-    // if (success) {
-    //   setUser(response.user);
-    //   localStorage.setItem("token", response.token);
-    //   toast.success("Login successfull");
-    //   router.push("/");
-    // } else return toast.error(response as string);
+    const { response, success } = await mutateAsync(data);
+    if (success) {
+      setUser(response.user);
+      localStorage.setItem("token", response.token);
+      toast.success("Login successfull");
+      if (response.user.onboarded) router.push("/");
+      else router.push("/onboarding");
+    } else return toast.error(response as string);
   };
 
   return (
@@ -72,12 +76,26 @@ const LoginPage = () => {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              placeholder="Password"
-              type="password"
-              {...register("password")}
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                placeholder="Password"
+                type={showPassword ? "text" : "password"}
+                className="pr-10 text-sm"
+                {...register("password")}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
             {errors.password && (
               <span className="text-red-500 text-xs">
                 {errors.password.message}

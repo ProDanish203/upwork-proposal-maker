@@ -4,17 +4,18 @@ export interface IUser extends Document {
   onboarded: boolean;
   fullname: string;
   email: string;
-  introduction: string;
+  password: string;
+  introduction?: string;
   roles: string[];
   skills: string[];
 
-  githubUrl: string;
+  githubUrl?: string;
   portfolioUrl?: string;
   linkedinUrl?: string;
   otherLinks?: string;
 
-  writingStyle: string;
-  sampleProposal: string;
+  writingStyle?: string;
+  sampleProposal?: string;
 }
 
 export interface IworkExperience extends Document {

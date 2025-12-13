@@ -7,42 +7,37 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: [true, "Email is required"],
       unique: [true, "Account with this email already exists"],
+      lowercase: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: [true, "Password is required"],
+      minlength: [8, "Password must be at least 8 characters long"],
     },
     fullname: {
       type: String,
       required: [true, "Fullname is required"],
     },
-    introduction: {
-      type: String,
-      required: [true, "Introduction is required"],
-    },
-    roles: {
-      type: [String],
-      required: [true, "At least one role is required"],
-    },
-    skills: {
-      type: [String],
-      required: [true, "At least one skill is required"],
-    },
-    githubUrl: {
-      type: String,
-      required: [true, "GitHub URL is required"],
-    },
     onboarded: {
       type: Boolean,
       default: false,
     },
+    introduction: String,
+    roles: {
+      type: [String],
+      default: [],
+    },
+    skills: {
+      type: [String],
+      default: [],
+    },
+    githubUrl: String,
     portfolioUrl: String,
     linkedinUrl: String,
     otherLinks: String,
-    writingStyle: {
-      type: String,
-      required: [true, "Writing style is required"],
-    },
-    sampleProposal: {
-      type: String,
-      required: [true, "Sample proposal is required"],
-    },
+    writingStyle: String,
+    sampleProposal: String,
   },
   { timestamps: true, versionKey: false, id: true }
 );
