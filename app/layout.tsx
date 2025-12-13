@@ -3,6 +3,7 @@ import { Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
+import ReactQueryProvider from "@/store/react-query-provider";
 
 const poppins = Poppins({
   weight: ["200", "300", "400", "500", "600", "700", "800"],
@@ -38,10 +39,12 @@ export default function RootLayout({
           roboto.variable
         )}
       >
-        <main className="">
-          <Toaster position="top-right" richColors />
-          {children}
-        </main>
+        <ReactQueryProvider>
+          <main className="">
+            <Toaster position="top-right" richColors />
+            {children}
+          </main>
+        </ReactQueryProvider>
       </body>
     </html>
   );
