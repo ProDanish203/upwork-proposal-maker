@@ -5,6 +5,7 @@ interface OnboardingStore extends OnboardingData {
   // Step 1
   setFullname: (fullname: string) => void;
   setAge: (age: string) => void;
+  setAvatar: (avatar: string) => void;
   setIntroduction: (introduction: string) => void;
   setRoles: (roles: string[]) => void;
   removeRole: (role: string) => void;
@@ -34,6 +35,8 @@ export const useOnboardingStore = create<OnboardingStore>((set) => ({
   age: "",
   setAge: (age) => set({ age }),
 
+  avatar: "",
+  setAvatar: (avatar) => set({ avatar }),
   introduction: "",
   setIntroduction: (introduction) => set({ introduction }),
   roles: [],

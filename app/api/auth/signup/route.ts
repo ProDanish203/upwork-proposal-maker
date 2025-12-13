@@ -37,11 +37,19 @@ export const POST = async (req: NextRequest) => {
       expiresIn: "1h",
     });
 
+    const newUserObj = newUser.toObject();
+
     const response = NextResponse.json(
       {
         message: "User created successfully",
         success: true,
-        user: newUser,
+        user: {
+          _id: newUserObj._id,
+          email: newUserObj.email,
+          fullname: newUserObj.fullname,
+          avatar: newUserObj.avatar,
+          onboarded: newUserObj.onboarded,
+        },
         token,
       },
       { status: 201 }

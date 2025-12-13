@@ -19,6 +19,8 @@ export const PUT = async (req: NextRequest) => {
     const updateObj: any = {};
     if (userUpdateFields.fullname !== undefined)
       updateObj.fullname = userUpdateFields.fullname;
+    if (userUpdateFields.avatar !== undefined)
+      updateObj.avatar = userUpdateFields.avatar;
     if (userUpdateFields.age !== undefined)
       updateObj.age = Number(userUpdateFields.age);
     if (userUpdateFields.introduction !== undefined)

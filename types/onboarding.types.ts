@@ -4,6 +4,7 @@ export interface OnboardingData {
   // Step 1
   fullname: string;
   age: string;
+  avatar?: string;
   introduction: string;
   roles: string[];
   skills: string[];

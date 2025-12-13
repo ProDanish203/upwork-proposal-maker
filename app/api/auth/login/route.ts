@@ -13,7 +13,9 @@ export const POST = async (req: NextRequest) => {
     if (!email) return throwApiError("Email is required", 400);
     if (!password) return throwApiError("Password is required", 400);
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select(
+      "_id email fullname avatar password onboarded"
+    );
     if (!user) return throwApiError("Invalid credentials", 400);
 
     const isPasswordValid = await bcryptjs.compare(password, user.password);
@@ -32,7 +34,10 @@ export const POST = async (req: NextRequest) => {
       {
         message: "User logged in successfully",
         success: true,
-        user,
+        user: {
+          ...user.toObject(),
+          password: undefined,
+        },
         token,
       },
       { status: 200 }

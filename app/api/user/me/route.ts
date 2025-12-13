@@ -8,7 +8,7 @@ export const GET = async (req: NextRequest) => {
     await connectDb();
     const userId = extractFromToken(req);
     const user = await User.findById(userId)
-      .select("_id email fullname onboarded")
+      .select("_id email fullname avatar onboarded")
       .select("-password");
     if (!user) return throwApiError("User not found", 404);
 

@@ -24,6 +24,7 @@ const userSchema = new Schema<IUser>(
       default: false,
     },
     age: Number,
+    avatar: String,
     introduction: String,
     roles: {
       type: [String],

@@ -2,6 +2,7 @@ export interface MinimalUser {
   _id: string;
   fullname: string;
   email: string;
+  avatar?: string;
   onboarded: boolean;
 }
 
@@ -9,6 +10,7 @@ export interface UpdateProfileRequest {
   // Step 1
   fullname?: string;
   age?: number;
+  avatar?: string;
   introduction?: string;
   roles?: string[];
   skills?: string[];

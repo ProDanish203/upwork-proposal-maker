@@ -14,8 +14,11 @@ import {
   WorkExperienceSection,
   WritingStyleSection,
 } from "./_components";
+import { useEdgeStore } from "@/lib/edgestore";
 
 const ProfilePage = () => {
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const { edgestore } = useEdgeStore();
   const [editMode, setEditMode] = useState({
     basicInfo: false,
     socialLinks: false,
@@ -29,6 +32,8 @@ const ProfilePage = () => {
     setFullname,
     age,
     setAge,
+    avatar,
+    setAvatar,
     introduction,
     setIntroduction,
     roles,
@@ -65,6 +70,7 @@ const ProfilePage = () => {
 
       if (user.fullname) setFullname(user.fullname);
       if (user.age) setAge(String(user.age));
+      if (user.avatar) setAvatar(user.avatar);
       if (user.introduction) setIntroduction(user.introduction);
       if (user.roles && user.roles.length > 0) setRoles(user.roles);
       if (user.skills && user.skills.length > 0) setSkills(user.skills);
@@ -104,6 +110,7 @@ const ProfilePage = () => {
     profileData,
     setFullname,
     setAge,
+    setAvatar,
     setIntroduction,
     setRoles,
     setSkills,
@@ -120,6 +127,43 @@ const ProfilePage = () => {
   const { mutateAsync: updateProfileMutation, isPending } = useMutation({
     mutationFn: updateProfile,
   });
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/"))
+      return toast.error("Please upload an image file");
+
+    if (file.size > 5 * 1024 * 1024)
+      return toast.error("Image size should be less than 5MB");
+
+    try {
+      setIsUploadingAvatar(true);
+
+      const res = await edgestore.publicFiles.upload({
+        file,
+        options: {
+          replaceTargetUrl: avatar || undefined,
+        },
+      });
+
+      setAvatar(res.url);
+
+      const { response, success } = await updateProfileMutation({
+        avatar: res.url,
+      });
+
+      if (!success)
+        return toast.error((response as string) || "Failed to update avatar");
+
+      toast.success("Avatar updated successfully");
+    } catch (error) {
+      toast.error("Failed to upload avatar");
+    } finally {
+      setIsUploadingAvatar(false);
+    }
+  };
 
   const toggleEdit = (section: keyof typeof editMode) => {
     setEditMode((prev) => ({ ...prev, [section]: !prev[section] }));
@@ -262,7 +306,11 @@ const ProfilePage = () => {
         <div className="flex flex-col items-center gap-6 pb-8 border-b border-border">
           <div className="relative group">
             <Avatar className="w-32 h-32">
-              <AvatarImage src="" alt={fullname} />
+              <AvatarImage
+                src={avatar || "/images/user.webp"}
+                alt={fullname}
+                className="object-cover"
+              />
               <AvatarFallback className="text-3xl bg-muted">
                 {fullname
                   .split(" ")
@@ -271,14 +319,39 @@ const ProfilePage = () => {
                   .toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <div className="absolute inset-0 bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
-              <Camera className="w-8 h-8 text-white" />
-            </div>
+            {isUploadingAvatar && (
+              <div className="absolute inset-0 bg-black/70 rounded-full flex flex-col items-center justify-center">
+                <Loader2 className="w-8 h-8 text-white animate-spin mb-2" />
+                <span className="text-white text-xs font-medium">
+                  Uploading...
+                </span>
+              </div>
+            )}
+            {!isUploadingAvatar && (
+              <label
+                htmlFor="avatar-upload"
+                className="absolute inset-0 bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+              >
+                {isUploadingAvatar ? (
+                  <Loader2 className="w-8 h-8 text-white animate-spin" />
+                ) : (
+                  <Camera className="w-8 h-8 text-white" />
+                )}
+              </label>
+            )}
+            <input
+              id="avatar-upload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleAvatarUpload}
+              disabled={isUploadingAvatar}
+            />
           </div>
           <div className="text-center">
             <h1 className="text-3xl font-semibold">{fullname}</h1>
             <p className="text-muted-foreground mt-1">
-              {roles.join(" • ") || "Developer"}
+              {roles.slice(0, 3).join(" • ") || "Developer"}
             </p>
           </div>
         </div>
