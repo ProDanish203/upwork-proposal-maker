@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Check, Edit2, Loader2, X } from "lucide-react";
+import { Check, Edit2, Loader2, Plus, X } from "lucide-react";
 
 export const SectionHeader = ({
   title,
@@ -33,7 +33,8 @@ export const SectionHeader = ({
       <div className="flex gap-2">
         {showAddButton && onAdd && (
           <Button onClick={onAdd} variant="outline" size="sm">
-            {addButtonText}
+            <span className="max-sm:hidden">{addButtonText}</span>
+            <Plus className="sm:hidden size-4" />
           </Button>
         )}
         <Button
@@ -42,16 +43,16 @@ export const SectionHeader = ({
           size="sm"
           disabled={isPending}
         >
-          <X className="w-4 h-4 mr-2" />
-          Cancel
+          <X className="w-4 h-4 sm:mr-2" />
+          <span className="max-sm:hidden">Cancel</span>
         </Button>
         <Button onClick={onSave} size="sm" disabled={isPending}>
           {isPending ? (
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            <Loader2 className="w-4 h-4 sm:mr-2 animate-spin" />
           ) : (
-            <Check className="w-4 h-4 mr-2" />
+            <Check className="w-4 h-4 sm:mr-2" />
           )}
-          Save
+          <span className="max-sm:hidden">Save</span>
         </Button>
       </div>
     )}

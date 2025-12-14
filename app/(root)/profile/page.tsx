@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader2, Camera } from "lucide-react";
 import { updateProfile, getUserProfile } from "@/API/user.api";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useOnboardingStore } from "@/store/onbboading";
 import {
@@ -17,6 +17,12 @@ import {
 import { useEdgeStore } from "@/lib/edgestore";
 
 const ProfilePage = () => {
+  const queryClient = useQueryClient();
+  const { data: profileData, isLoading: isLoadingProfile } = useQuery({
+    queryKey: ["user-profile"],
+    queryFn: getUserProfile,
+  });
+
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const { edgestore } = useEdgeStore();
   const [editMode, setEditMode] = useState({
@@ -57,12 +63,6 @@ const ProfilePage = () => {
     sampleProposal,
     setSampleProposal,
   } = useOnboardingStore();
-
-  const { data: profileData, isLoading: isLoadingProfile } = useQuery({
-    queryKey: ["user-profile"],
-    queryFn: getUserProfile,
-    retry: 1,
-  });
 
   useEffect(() => {
     if (profileData?.success && profileData.response) {
@@ -126,6 +126,11 @@ const ProfilePage = () => {
 
   const { mutateAsync: updateProfileMutation, isPending } = useMutation({
     mutationFn: updateProfile,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user-profile"],
+      });
+    },
   });
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

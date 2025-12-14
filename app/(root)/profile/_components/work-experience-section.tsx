@@ -84,7 +84,7 @@ export const WorkExperienceSection = ({
     <Card className="border-border">
       <CardContent className="pt-6">
         <SectionHeader
-          title="Work Experience"
+          title="Experience"
           isEditing={isEditing}
           onEdit={onEdit}
           onCancel={onCancel}
@@ -151,13 +151,14 @@ export const WorkExperienceSection = ({
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Start Date</Label>
                     {isEditing ? (
                       <Input
                         type="date"
                         value={exp.startDate}
+                        className="max-sm:text-sm"
                         onChange={(e) =>
                           updateWorkExperience(
                             exp.id,
@@ -179,6 +180,7 @@ export const WorkExperienceSection = ({
                       <Input
                         type="date"
                         value={exp.endDate}
+                        className="max-sm:text-sm"
                         onChange={(e) =>
                           updateWorkExperience(
                             exp.id,

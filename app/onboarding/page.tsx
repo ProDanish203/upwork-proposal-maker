@@ -13,13 +13,14 @@ import {
 } from "./_components";
 import { useOnboardingStore } from "@/store/onbboading";
 import { updateProfile, getUserProfile } from "@/API/user.api";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 export default function OnboardingPage() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [currentStep, setCurrentStep] = useState(0);
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -123,6 +124,9 @@ export default function OnboardingPage() {
 
   const { mutateAsync: updateProfileMutation, isPending } = useMutation({
     mutationFn: updateProfile,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user-profile"] });
+    },
   });
 
   const saveStepData = async (step: number) => {
