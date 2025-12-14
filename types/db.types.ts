@@ -36,3 +36,19 @@ export interface IProject extends Document {
   description: string;
   link: string;
 }
+
+export interface IChat extends Document {
+  userId: Types.ObjectId;
+  title: string;
+}
+
+export enum Sender {
+  USER = "user",
+  AI = "AI",
+}
+
+export interface IMessage extends Document {
+  chatId: Types.ObjectId;
+  sender: Sender;
+  content: string;
+}

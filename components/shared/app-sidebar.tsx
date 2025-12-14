@@ -9,17 +9,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-  useSidebar,
 } from "@/components/ui/sidebar";
 import { NavUser } from "./nav-user";
 import { NavChats } from "./nav-chats";
 import { NavMain } from "./nav-main";
-import { cn } from "@/lib/utils";
 
 export const AppSidebar = ({
   ...props
 }: React.ComponentProps<typeof Sidebar>) => {
-  const { isMobile, open } = useSidebar();
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
