@@ -44,7 +44,8 @@ export interface IChat extends Document {
 
 export enum Sender {
   USER = "user",
-  AI = "AI",
+  ASSISTANT = "assistant",
+  SYSTEM = "system",
 }
 
 export interface IMessage extends Document {

@@ -76,7 +76,7 @@ export const NavChats = () => {
           chats.map((chat: Chat) => (
             <SidebarMenuItem key={chat._id}>
               <SidebarMenuButton asChild>
-                <Link href={`/chats/${chat._id}`}>
+                <Link href={`/chat/${chat._id}`}>
                   <span>{chat.title}</span>
                 </Link>
               </SidebarMenuButton>

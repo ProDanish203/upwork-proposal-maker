@@ -2,6 +2,8 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import { UIMessage, UIMessagePart } from "ai";
+import { ChatMessage, ChatTools, CustomUIDataTypes } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -43,3 +45,28 @@ export const extractFromToken = (req: NextRequest) => {
     return throwApiError(error.message || "Invalid token", 401);
   }
 };
+
+export function sanitizeText(text: string) {
+  return text.replace("<has_function_call>", "");
+}
+
+export function convertToUIMessages(messages: any[]): ChatMessage[] {
+  return messages.map((message) => ({
+    id: message._id,
+    role: message.role as "user" | "assistant" | "system",
+    parts: message.parts as UIMessagePart<CustomUIDataTypes, ChatTools>[],
+    metadata: {
+      createdAt: new Date(message.createdAt)
+        .toISOString()
+        .replace("T", " ")
+        .substring(0, 19),
+    },
+  }));
+}
+
+export function getTextFromMessage(message: ChatMessage | UIMessage): string {
+  return message.parts
+    .filter((part) => part.type === "text")
+    .map((part) => (part as { type: "text"; text: string }).text)
+    .join("");
+}

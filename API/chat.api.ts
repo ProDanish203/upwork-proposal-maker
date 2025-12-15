@@ -53,3 +53,15 @@ export const getAllChats = async (page: number = 1, limit: number = 20) => {
     return { response: "Something went wrong", success: false };
   }
 };
+
+export const getChatById = async (chatId: string) => {
+  try {
+    const { data } = await api.get(`/chat/${chatId}`, {
+      withCredentials: true,
+    });
+    if (data.success) return { response: data.chat, success: true };
+    return { response: data.message, success: false };
+  } catch (error) {
+    return { response: "Something went wrong", success: false };
+  }
+};
