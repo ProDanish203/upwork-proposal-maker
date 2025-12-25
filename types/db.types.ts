@@ -52,4 +52,5 @@ export interface IMessage extends Document {
   chatId: Types.ObjectId;
   sender: Sender;
   content: string;
+  attachments: string[];
 }

@@ -12,8 +12,11 @@ export const signup = async (payload: SignupSchema) => {
         success: true,
       };
     return { response: data.message, success: false };
-  } catch (err) {
-    return { response: "Something went wrong", success: false };
+  } catch (err: any) {
+    return {
+      response: err?.response?.data?.message || "Something went wrong",
+      success: false,
+    };
   }
 };
 
@@ -28,8 +31,11 @@ export const login = async (payload: LoginSchema) => {
         success: true,
       };
     return { response: data.message, success: false };
-  } catch (err) {
-    return { response: "Something went wrong", success: false };
+  } catch (err: any) {
+    return {
+      response: err?.response?.data?.message || "Something went wrong",
+      success: false,
+    };
   }
 };
 
@@ -41,7 +47,10 @@ export const logout = async () => {
       { withCredentials: true }
     );
     return data;
-  } catch (err) {
-    return { message: "Something went wrong", success: false };
+  } catch (err: any) {
+    return {
+      message: err?.response?.data?.message || "Something went wrong",
+      success: false,
+    };
   }
 };

@@ -25,8 +25,11 @@ export const updateChat = async ({
     );
     if (data.success) return { response: data.chat, success: true };
     return { response: data.message, success: false };
-  } catch (error) {
-    return { response: "Something went wrong", success: false };
+  } catch (err: any) {
+    return {
+      response: err?.response?.data?.message || "Something went wrong",
+      success: false,
+    };
   }
 };
 
@@ -37,8 +40,11 @@ export const deleteChat = async (chatId: string) => {
     });
     if (data.success) return { response: data.message, success: true };
     return { response: data.message, success: false };
-  } catch (error) {
-    return { response: "Something went wrong", success: false };
+  } catch (err: any) {
+    return {
+      response: err?.response?.data?.message || "Something went wrong",
+      success: false,
+    };
   }
 };
 
@@ -49,8 +55,11 @@ export const getAllChats = async (page: number = 1, limit: number = 20) => {
     });
     if (data.success) return { response: data.chats, success: true };
     return { response: data.message, success: false };
-  } catch (error) {
-    return { response: "Something went wrong", success: false };
+  } catch (err: any) {
+    return {
+      response: err?.response?.data?.message || "Something went wrong",
+      success: false,
+    };
   }
 };
 
@@ -61,7 +70,10 @@ export const getChatById = async (chatId: string) => {
     });
     if (data.success) return { response: data.chat, success: true };
     return { response: data.message, success: false };
-  } catch (error) {
-    return { response: "Something went wrong", success: false };
+  } catch (err: any) {
+    return {
+      response: err?.response?.data?.message || "Something went wrong",
+      success: false,
+    };
   }
 };
