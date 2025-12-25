@@ -12,6 +12,10 @@ const messageSchema = new Schema<IMessage>(
       type: String,
       required: [true, "Content is required"],
     },
+    attachments: {
+      type: [String],
+      default: [],
+    },
     sender: {
       type: String,
       enum: Object.values(Sender),

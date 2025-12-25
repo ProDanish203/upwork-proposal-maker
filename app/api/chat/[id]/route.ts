@@ -16,8 +16,8 @@ export const PUT = async (
     const chatId = (await params).id;
     const { title } = await req.json();
 
-    const chat = await Chat.findOneAndUpdate(
-      { chatId, userId },
+    const chat = await Chat.findByIdAndUpdate(
+      { _id: chatId },
       { title },
       { new: true }
     );
